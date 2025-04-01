@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "gus-regon": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "gus-regon-mcp-server"
+      ],
+      "env": {
+        "GUS_API_KEY": "YOUR_API_GUS_KEY"
+      },
+      "description": "GUS REGON API server for retrieving Polish company data by NIP (VAT number)"
+    }
+  }
+}

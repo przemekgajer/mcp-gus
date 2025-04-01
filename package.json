@@ -1,0 +1,39 @@
+{
+  "name": "gus-regon-mcp-server",
+  "version": "1.1.0",
+  "description": "MCP server for fetching Polish company data from GUS REGON by NIP (VAT number)",
+  "main": "minimal-server.js",
+  "bin": {
+    "gus-regon-mcp-server": "./minimal-server.js"
+  },
+  "scripts": {
+    "start": "node minimal-server.js",
+    "test": "echo \"No tests specified\" && exit 0"
+  },
+  "keywords": [
+    "MCP",
+    "n8n",
+    "GUS",
+    "REGON",
+    "NIP",
+    "VAT",
+    "Poland",
+    "company-data"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "dependencies": {
+    "bir1": "^3.0.2"
+  },
+  "type": "commonjs",
+  "engines": {
+    "node": ">=14.16.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/gus-regon-mcp-server"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

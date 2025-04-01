@@ -1,0 +1,64 @@
+# Node.js dependencies
+node_modules/
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+package-lock.json
+yarn.lock
+
+# Environment variables and credentials
+.env
+.env.local
+.env.*.local
+*.env.json
+*.env.js
+
+# GUS REGON API specific
+Instruction to GUS REGON API/
+*.wsdl
+*.pdf
+*.xml
+*.xlsx
+*.txt
+
+# Build/distribution files
+dist/
+build/
+out/
+coverage/
+
+# Editor directories and files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Temporary files
+tmp/
+temp/
