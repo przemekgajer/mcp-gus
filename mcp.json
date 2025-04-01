@@ -7,7 +7,8 @@
         "gus-regon-mcp-server"
       ],
       "env": {
-        "GUS_API_KEY": "YOUR_API_GUS_KEY"
+        "GUS_API_KEY": "api_key",
+        "NODE_DEBUG": "mcp*,bir*,net,stream"
       },
       "description": "GUS REGON API server for retrieving Polish company data by NIP (VAT number)"
     }

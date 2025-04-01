@@ -44,7 +44,7 @@ Once the server is running, you can test it by typing the following MCP messages
 
 ### Search by NIP (GUS - Polish Statistical Office):
 ```json
-{"id":"2","type":"request","method":"execute","params":{"tool":"regon_search","input":{"nip":"5261040567"}}}
+{"id":"2","type":"request","method":"execute","params":{"tool":"regon_search","input":{"nip":"6443307781"}}}
 ```
 
 ## 5. Set Up MCP Configuration

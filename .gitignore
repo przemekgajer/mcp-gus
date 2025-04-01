@@ -5,6 +5,7 @@ yarn-debug.log
 yarn-error.log
 package-lock.json
 yarn.lock
+CLAUDE.md
 
 # Environment variables and credentials
 .env
