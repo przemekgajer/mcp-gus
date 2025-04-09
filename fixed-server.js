@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// debug-server.js - MCP server with enhanced logging for n8n integration
+// fixed-server.js - Optimized MCP server for GUS REGON API integration
 
 const readline = require('readline');
 const fs = require('fs');
@@ -38,56 +38,12 @@ async function loadBir() {
 
 // Function to start server after bir1 is loaded
 async function startServer() {
-  // Check if API key exists
+  // Extract the API key from environment variables
   let apiKey = process.env.GUS_API_KEY;
   if (!apiKey) {
-    // Check if the API key was passed as a JSON object with key and debug properties
-    try {
-      const envVars = process.env;
-      const keys = Object.keys(envVars).filter(k => k.startsWith('GUS_API_'));
-      log(`Found possible API key entries: ${keys}`);
-      
-      // Look for API key in any environment variable
-      for (const key of keys) {
-        try {
-          const value = envVars[key];
-          log(`Checking ${key} with value length: ${value.length}`);
-          
-          // Check if it's a JSON string
-          if (value.includes('{') && value.includes('}')) {
-            const parsed = JSON.parse(value);
-            if (parsed.key) {
-              apiKey = parsed.key;
-              log(`Found API key in JSON format`);
-              
-              // Enable debug if specified
-              if (parsed.debug) {
-                process.env.NODE_DEBUG = 'mcp*,bir*,net,stream';
-                log(`Enabled debug mode from JSON config`);
-              }
-              break;
-            }
-          } else if (value.length > 5) {
-            // Treat as direct API key
-            apiKey = value;
-            log(`Using ${key} as API key`);
-            break;
-          }
-        } catch (e) {
-          log(`Error parsing ${key}: ${e.message}`);
-        }
-      }
-    } catch (e) {
-      log(`Error parsing environment: ${e.message}`);
-    }
-    
-    // Still no API key found
-    if (!apiKey) {
-      log("Missing GUS API key. Set the GUS_API_KEY environment variable.");
-      process.exit(1);
-    }
+    log("Missing GUS API key. Set the GUS_API_KEY environment variable.");
+    process.exit(1);
   }
-  
   log(`GUS_API_KEY found with length: ${apiKey.length}`);
 
   // Create GUS client
@@ -122,7 +78,7 @@ async function startServer() {
     terminal: false
   });
 
-  // Server info
+  // Server info - following exactly the MCP protocol format
   const serverInfo = {
     name: "GUS-REGON-API",
     version: "1.0.0",
@@ -163,7 +119,7 @@ async function startServer() {
         return response;
       }
       
-      // Handle tool execution
+      // Handle tool execution - this must match exact MCP protocol expectations
       if (parsed.type === 'request' && parsed.method === 'execute' && parsed.params) {
         const { tool, input } = parsed.params;
         log(`Processing execute request for tool: ${tool}`);
@@ -265,7 +221,7 @@ async function startServer() {
               outputData._reportError = `Failed to fetch full report: ${err.message}`;
             }
             
-            // Return formatted result
+            // Return formatted result - must follow MCP protocol format
             const response = {
               id: parsed.id,
               result: {
@@ -280,13 +236,12 @@ async function startServer() {
           } catch (error) {
             log(`Error processing request: ${error.message}`);
             log(error.stack);
+            // Return error in correct MCP format
             return {
               id: parsed.id,
-              result: {
-                content: [{
-                  type: "text",
-                  text: `Error retrieving data from GUS REGON API: ${error.message}`
-                }]
+              error: {
+                code: -32603,
+                message: `Error retrieving data from GUS REGON API: ${error.message}`
               }
             };
           }
@@ -299,6 +254,17 @@ async function startServer() {
           error: {
             code: -32601,
             message: `Unknown tool or invalid parameters: ${tool}`
+          }
+        };
+      }
+      
+      // Handle list_tools request
+      if (parsed.type === 'request' && parsed.method === 'list_tools') {
+        log('Processing list_tools request');
+        return {
+          id: parsed.id,
+          result: {
+            tools: serverInfo.tools
           }
         };
       }
@@ -343,6 +309,7 @@ async function startServer() {
     } catch (error) {
       log(`Error processing line: ${error.message}`);
       log(error.stack);
+      // Return a properly formatted error response
       console.log(JSON.stringify({
         id: null,
         error: {

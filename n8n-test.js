@@ -7,7 +7,7 @@ const path = require('path');
 const fs = require('fs');
 
 // Configuration
-const serverPath = path.join(__dirname, 'debug-server.js');
+const serverPath = path.join(__dirname, 'fixed-server.js');
 const apiKey = process.env.GUS_API_KEY || 'api_key'; // Use environment variable or default
 const logFile = path.join(__dirname, 'n8n-test.log');
 
@@ -85,7 +85,7 @@ async function runTest() {
       params: {
         tool: 'regon_search',
         input: {
-          nip: '5261040567'  // GUS's NIP
+          nip: '6443307781'  // Working NIP example
         }
       }
     };
